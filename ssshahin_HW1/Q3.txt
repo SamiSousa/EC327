@@ -1,0 +1,41 @@
+ssshahin_HW1.zip
+Q3.txt
+
+Address		Machine code		Assembly	Comments
+37	1001 000011 000001 (Hex: 90C1)	mov R3, 1
+38	1100 000001 000011 (Hex: C043)	mov R1, [R3]	;R1 holds n
+39	1001 000011 000010 (Hex: 90C2)	mov R3, 2
+40	1100 000010 000011 (Hex: C083)	mov R2, [R3]	;R2 holds m
+41	1001 000011 000000 (Hex: 90C0)	mov R3, 0	;R3 acts as multiplication looper, for multiplying by n
+42	1001 000100 000001 (Hex: 9101)	mov R4, 1	;R4 acts as power looper, for multiplying m times (Starts at 1, because n^1 = n, and requires no loop)
+43	1001 000000 000000 (Hex: 9000)	mov R0, 0	;necessary for comparison in case of n = 0
+44	1000 000001 000011 (Hex: 8043)	cmp R1, R3	;checks if n is zero
+45	0100 000001 000001 (Hex: 4041)	je end		;if n is zero, jump to label "end"
+46	1000 000010 000011 (Hex: 8083)	cmp R2, R3	;checks if m is zero
+47	0100 000001 000000 (Hex: 4040)	je zeropwr	;if m is zero, jump to label "zeropwr"
+48	1000 000010 000100 (Hex: 8084)	cmp R2, R4	;checks if m is one
+49	0100 000000 111110 (Hex: 403E)	je onepwr	;if m is one, jump to label "onepwr"
+50	1010 000101 000001 (Hex: A141)	mov R5, R1	;R5 acts as current multiplier, initially n, then n*n, n*n*n, etc
+51	1001 000000 000000 (Hex: 9000)	pwr: mov R0, 0	;loop back here a number of times equal to m
+52	0101 000000 000101 (Hex: 5005)	mult: add R0, R5	;loop back here a number of times equal to n for each pwr loop
+53	0001 000000 000011 (Hex: 1003)	inc R3		;mult loop counter
+54	1000 000011 000001 (Hex: 80C1)	cmp R3, R1	;checks if R3 equals n
+55	0011 000000 110100 (Hex: 3034)	jne mult	;if R3 doesn't equal n, repeat
+56	1001 000011 000000 (Hex: 90C0)	mov R3, 0	;reset multiplier loop counter
+57	1010 000101 000000 (Hex: A140)	mov R5, R0	;set R5 to held value of R0, which holds a power of n
+58	0001 000000 000100 (Hex: 1004)	inc R4		;increase pwr looper
+59	1000 000100 000010 (Hex: 8102)	cmp R4, R2	;checks if result is reached, checks if R4 equals m
+60	0011 000000 110011 (Hex: 3033)	jne pwr		;if not equal, repeat pwr loop
+61	0010 000001 000001 (Hex: 2041)	jmp end		;jump to end, to skip special case of m = 0 or m = 1
+62	1010 000000 000001 (Hex: A001)	onepwr: mov R0, R1	;assign n to R0; for case m = 1
+63	0010 000001 000001 (Hex: 2041)	jmp end		;jump to end to skip special case for m = 0
+64	1001 000000 000001 (Hex: 9001)	zeropwr: mov R0, 1	;code for special case of m = 0
+65	1001 000001 011110 (Hex: 905E)	end: mov R1, 30
+66	1011 000001 000000 (Hex: B040)	mov [R1], R0	;stores result in memory location 30
+67	0000 000000 000000 (Hex: 0000)	halt		;end code
+
+(begining at 37)
+Simulator Hex
+90c1c04390c2c08390c09101900080434041808340408084403ea14190005005100380c1303490c0a1401004810230332041a00120419001905eb0400000
+
+

@@ -1,0 +1,21 @@
+ssshahin_HW1.zip
+Q1.txt
+
+Address			Machine code		Assembly		Comments
+31		1001 000000 001010 (Hex: 900A)	mov R0, 10		;R0 holds 10
+32		1001 000001 001011 (Hex: 904B)	mov R1, 11		;R1 holds 11
+33		1001 000010 010100 (Hex: 9094)	mov R2, 20		;R2 holds 20 for comparison later
+34		1011 000000 000001 (Hex: B001)  store: mov [R0], R1	;Store value held by R1 in memory location R0, with label store for reference in jump later
+35		0001 000000 000000 (Hex: 1000)	inc R0			;R0 incremented by one 
+36		0001 000000 000001 (Hex: 1001)	inc R1			;R1 incremented by one
+37		1000 000001 000010 (Hex: 8042)	cmp R1, R2		;compares R1 and R2 to check if R1 has reached 20
+38		0011 000000 100010 (Hex: 3022)	jne store		;jumps to the label store if the R1 isn't equal to R2
+39		1011 000000 000001 (Hex: B001)	mov [R0], R1		;Store value held by R1 (20) in memory address R0 (19)
+40		1100 000001 000000 (Hex: C040)	mov R1, [R0]		;Access value in memory slot 19
+41		0001 000000 000001 (Hex: 1001)	inc R1
+42		0001 000000 000001 (Hex: 1001)	inc R1			;Increment the value held in memory slot 19
+43		1011 000000 000001 (Hex: B001)	mov [R0], R1		;save the incremented value in it's memory address
+44		0000 000000 000000 (Hex: 0000)	halt			;terminate code
+
+Simulator Hex
+900a904b9094b0011000100180423022b001c04010011001b0010000

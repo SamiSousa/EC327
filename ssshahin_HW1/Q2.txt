@@ -1,0 +1,29 @@
+ssshahin_HW1.zip
+Q2.txt
+
+Address		Machine code		Assembly	Comments
+43	1001 000000 000010 (Hex: 9002)	mov R0, 2	;assign 2 to R0
+44	1100 000001 000000 (Hex: C040)	mov R1, [R0]	;load the value at memory address 2 to R1 (value of b)
+45	1001 000000 000011 (Hex: 9003)	mov R0, 3	;assign 3 to R0
+46	1100 000010 000000 (Hex: C080)	mov R2, [R0]	;load the value at memory address 3 to R2 (value of c)
+47	0110 000001 000010 (Hex: 6042)	sub R1, R2	;subtract R2 from R1 and assign that value to R1 (b minus c)
+48	1001 000000 000001 (Hex: 9001)	mov R0, 1	;assign 1 to R0
+49	1100 000010 000000 (Hex: C080)	mov R2, [R0]	;load value at memory address 1 to R2 (value of a)
+50	0101 000001 000010 (Hex: 5042)	add R1, R2	;add R1 and R2 and store result in R1 (a+(b-c))
+51	1001 000000 000100 (Hex: 9004)	mov R0, 4 	;assign 4 to R0
+52 	1100 000010 000000 (Hex: C080)	mov R2, [R0]	;load value at memory address 4 to R2 (value of d)
+53 	1001 000000 000000 (Hex: 9000)	mov R0, 0 	;assign 0 ro R0 (for my implementation of multiplication and comparing to value of d)
+54 	1000 000000 000010 (Hex: 8002)	cmp R0, R2 	;compare R0 to R2 (checks if d is equal to 0)
+55 	0100 000000 111101 (Hex: 403D)	je end		;if d equals 0, skip forward to the label "end"
+56	1001 000011 000000 (Hex: 90C0)	mov R3, 0	;assign R3 to 0, it will act as the counter for the multiplication loop
+57	0101 000000 000001 (Hex: 5001)	multiply: add R0, R1	;adds R1 to R0, storing result in R0. Label for looping to
+58	0001 000000 000011 (Hex: 1003)	inc R3		;increment R3, the loop counter
+59	1000 000011 000010 (Hex: 80C2)	cmp R3, R2	;compare the loop counter, R3, to d, R2. addition repeats d times
+60	0011 000000 111001 (Hex: 3039)	jne multiply	;jumps to the multiply label if counter isn't equal to d
+61	1001 000011 011110 (Hex: 90DE)	end: mov R3, 30	;assigns value of 30 to R3. label for special case where d = 0
+62	1011 000011 000000 (Hex: B0C0)	mov [R3], R0	;stores result of multiplication/ the expression in memory address 30
+63	0000 000000 000000 (Hex: 0000)	halt		;ends program
+
+(Begining at 43)
+Simulator Hex
+9002c0409003c08060429001c08050429004c08090008002403d90c05001100380c2303990deb0c00000

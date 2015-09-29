@@ -1,0 +1,20 @@
+ssshahin_HW1.zip
+Q4.txt
+
+Address		Machine code		Assembly		Comments
+37	1001 000000 001010 (Hex: 900A)	mov R0, 10
+38	1100 000001 000000 (Hex: C040)	mov R1, [R0]		;retriving 55 from memory, place in R1
+39	1001 000000 001001 (Hex: 9009)	mov R0, 9
+40	1100 000010 000000 (Hex: C080)	mov R2, [R0]		;retriving 24 from memory, place in R2
+41	1001 000011 000001 (Hex: 90C1)	mov R3, 1		;for comparison for loop
+42	0101 000001 000010 (Hex: 5042)	loop: add R1, R2	;labeled loop, add two values, hold in R1
+43	1100 000010 000000 (Hex: C080)	mov R2, [R0]		;load number from memory, R2 becomes number held in memory at R0
+44	0110 000000 000011 (Hex: 6003)	sub R0, R3		;decrease R0 by one
+45	1011 000000 000001 (Hex: B001)	mov [R0], R1		;store result of addition in memory R0
+46	1000 000000 000011 (Hex: 8001)	cmp R0, R3		;compare R0 to 1, if R0 == 1, then loop complete
+47	0011 000000 101010 (Hex: 302A)	jne loop		;if not equal, continue loop
+48	0000 000000 000000 (Hex: 0000)	halt			;end code, memory addresses 1 - 10 used
+
+(starting at line 37)
+Simulator Hex
+900ac0409009c08090c15042c0806003b0018003302a0000
