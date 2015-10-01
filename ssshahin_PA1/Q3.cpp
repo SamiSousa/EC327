@@ -6,6 +6,7 @@ How different two integers are in hex using Hamming distance
 */
 
 #include <iostream>
+#include <limits>
 //#include <cstdlib>
 
 using namespace std;
@@ -20,10 +21,12 @@ int power(int base, int exponent);
 bool isInt(double num);
 //checks if input double is an integer
 
+int validInputOnly();
+//checks for numeric input only
+
 //main function
 int main(){
 	//declare variables
-	double rawInput1, rawInput2;
 
 	int input1, input2;
 	/*
@@ -38,29 +41,14 @@ int main(){
 	cout<<measureHammingHex(another1, another2)<<endl;
 	*/
 
-	cout<<"Enter two positive integers: "<<endl;
+	cout<<"Enter two positive integers:"<<endl;
 	
-	cin>>rawInput1;
-	cin.ignore();
+	input1 = validInputOnly();
+	
+	input2 = validInputOnly();
 
-	if (! isInt(rawInput1) ){
-		cout<<"Not an integer. Terminating program."<<endl;
-	}else{
-		cin>>rawInput2;
-		cin.ignore();
 
-		if (! isInt(rawInput2)){
-			cout<<"Not an integer. Terminating program."<<endl;
-		}else{
-
-			input1 = (int) rawInput1;
-			input2 = (int) rawInput2;
-
-			cout<<"Hamming distance between "<<input1<<" and "<<input2<<" when numbers are in hex format is: "<<measureHammingHex(input1, input2)<<endl;
-
-		}
-	}
-
+	cout<<"Hamming distance between "<<input1<<" and "<<input2<<" when numbers are in hex format is: "<<measureHammingHex(input1, input2)<<endl;
 
 	return 0;
 }
@@ -119,4 +107,36 @@ bool isInt(double num){
 	bool check = ( (int) num == num );
 
 	return check;
+}
+
+int validInputOnly(){
+	int input;
+
+	double rawinput;
+
+	cin>>rawinput;
+
+	do{
+		if(cin.fail()){
+			cin.clear();
+			//cin.ignore is for when you type random gibberish when I want only doubles
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			cout<<"Please input a positive integer: ";
+
+			cin>>rawinput;
+
+		}else if(rawinput <= 0 || ((int) rawinput != rawinput)){
+			cout<<"Please input a positive integer: ";
+
+			cin>>rawinput;
+
+		}
+		
+
+	} while(cin.fail() || rawinput <= 0 || ((int) rawinput != rawinput) );
+
+	input = rawinput;
+
+	return input;
 }

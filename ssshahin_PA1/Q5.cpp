@@ -6,6 +6,7 @@ Guess the computer's number
 */
 
 #include <iostream>
+#include <limits>
 #include <cstdlib>
 #include <time.h>
 
@@ -22,6 +23,8 @@ int main(){
 	//declare variables
 	double input, last = 0;
 
+	const int MAX_VALUE = 1000;
+
 	//for checking that input is valid
 	bool valid = false;
     
@@ -29,7 +32,7 @@ int main(){
     srand(time(NULL));
     
 	//generating random int
-	const int randomint = rand() % 999 + 1;
+	const int randomint = rand() % (MAX_VALUE - 1) + 1;
 
 	cout<<"Enter your first guess: ";
 	cin>>input;
@@ -38,19 +41,35 @@ int main(){
 	while(input != randomint){
 
 		//if second input, or valid input, runs
-		if (valid){
+		if (valid && !(input <= 0 || (int) input != input || input > MAX_VALUE || cin.fail())){
 		
 			compareWarmCold(input, last, randomint);
 			valid = false;
 		
 		}
 
-		if (input <= 0 || (int) input != input){
+		if (cin.fail()){
 
-			cout<<"Please only enter positive integers: ";
-			valid = false;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-		}else{
+			cout<<"Please only enter positive integers below "<<MAX_VALUE<<": ";
+
+			if(last != 0)
+				valid = true;
+			else
+				valid = false;
+
+		}else if (input <= 0 || (int) input != input || input > MAX_VALUE){
+			//negative / zero input or double input or input above MAX_VALUE
+			cout<<"Please only enter positive integers below "<<MAX_VALUE<<": ";
+			
+			if(last != 0)
+				valid = true;
+			else
+				valid = false;
+
+		} else {
 
 			valid = true;
 			last = input;
@@ -63,7 +82,7 @@ int main(){
 		
 	}
 
-	cout<<"Correct! The number was "<<randomint<<"!"<<endl;
+	cout<<"Correct!  The number was "<<randomint<<"!"<<endl;
 
 	return 0;
 }

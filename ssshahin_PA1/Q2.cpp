@@ -6,6 +6,7 @@ Convert
 */
 
 #include <iostream>
+#include <limits>
 #include <iomanip>
 //#include <cstdlib>
 
@@ -14,17 +15,20 @@ using namespace std;
 //declare functions
 
 //functions for temperature conversion
-double celciusToFahrenheit(double ctemp);
-double celciusToKelvin(double ctemp);
+double celsiusToFahrenheit(double ctemp);
+double celsiusToKelvin(double ctemp);
 
-double fahrenheitToCelcius(double ftemp);
+double fahrenheitToCelsius(double ftemp);
 double fahrenheitToKelvin(double ftemp);
 
-double kelvinToCelcius(double ktemp);
+double kelvinToCelsius(double ktemp);
 double kelvinToFahrenheit(double ktemp);
 
 //function for rounding decimals
 double threeDecimals(double num);
+
+//function for valididating input
+double validInputOnly();
 
 //The following main function will take user's input for which conversion the user wants
 //Then it will prompt the user to input a temperature
@@ -39,33 +43,26 @@ int main(){
     double inputTemp, convertedTemp;
 
 	//guide for conversion types
-	cout<<"Celcius to Fahrenheit\t(enter 0)"<<endl;
-	cout<<"Celcius to Kelvin\t(enter 1)"<<endl;
-	cout<<"Fahrenheit to Celcius\t(enter 2)"<<endl;
-	cout<<"Fahrenheit to Kelvin\t(enter 3)"<<endl;
-	cout<<"Kelvin to Celcius\t(enter 4)"<<endl;
-	cout<<"Kelvin to Fahrenheit\t(enter 5)"<<endl;
+	cout<<"Celsius to Fahrenheit (enter 0)"<<endl;
+	cout<<"Celsius to Kelvin (enter 1)"<<endl;
+	cout<<"Fahrenheit to Celsius (enter 2)"<<endl;
+	cout<<"Fahrenheit to Kelvin (enter 3)"<<endl;
+	cout<<"Kelvin to Celsius (enter 4)"<<endl;
+	cout<<"Kelvin to Fahrenheit (enter 5)"<<endl;
     
     cout<<"Conversion type: ";
     
-    do /*&& loop_counter < 10*/{
+    do {
 		
 		//user input, number between 0 and 5 inclusive
-		cin>>convertType;
-        //eat feed
-        cin.ignore();
-        
-		if ( (convertType < 0 || convertType > 5) && ((int) convertType != convertType )){
+		convertType = validInputOnly();
+
+        if ( (convertType < 0 || convertType > 5) || ((int) convertType != convertType )){
 			cout<<"Wrong input, try again: ";
-			//loop_counter++;
+
 		}
-		/*
-		if (loop_counter >= 10){
-			cout<<"Too many failed attempts. Exiting program."<<endl;
-			break;
-		}
-		*/
-	} while ((convertType > 5 || convertType < 0) && ((int) convertType != convertType));
+		
+	} while (((convertType > 5 || convertType < 0) || ((int) convertType != convertType)));
     
     
 	if (convertType == 0 || convertType == 1)
@@ -77,80 +74,70 @@ int main(){
 	else if (convertType == 4 || convertType == 5)
 		cout<<"Enter the amount in Kelvin: ";
 	
-	else{
-		//checking for issues in code
-		cout<<"Well the input isn't working.";
-	}
 
 	//user input temperature of given units
-	cin>>inputTemp;
-	
-	//eating remains of input feed
-    cin.ignore();
+	inputTemp = validInputOnly();
 	
 	if (convertType == 0){
-		//Celcius to Fahrenheit
-		convertedTemp = celciusToFahrenheit(inputTemp);
+		//Celsius to Fahrenheit
+		convertedTemp = celsiusToFahrenheit(inputTemp);
 
 		//round to three decimal places
-		convertedTemp = threeDecimals(convertedTemp);
+		//convertedTemp = threeDecimals(convertedTemp);
 
 		//outputs
-		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Celcius is "<<convertedTemp<<" Fahrenheit."<<endl;
+		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Celsius is "<<convertedTemp<<" Fahrenheit."<<endl;
 
 	}else if (convertType == 1){
-		//Celcius to Kelvin
-		convertedTemp = celciusToKelvin(inputTemp);
+		//Celsius to Kelvin
+		convertedTemp = celsiusToKelvin(inputTemp);
 
 		//round to three decimal places
-		convertedTemp = threeDecimals(convertedTemp);
+		//convertedTemp = threeDecimals(convertedTemp);
 
 		//outputs
-		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Celcius is "<<convertedTemp<<" Kelvin."<<endl;
+		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Celsius is "<<convertedTemp<<" Kelvin."<<endl;
 
 	}else if (convertType == 2){
-		//Fahrenheit to Celcius
-		convertedTemp = fahrenheitToCelcius(inputTemp);
+		//Fahrenheit to Celsius
+		convertedTemp = fahrenheitToCelsius(inputTemp);
 
 		//round to three decimal places
-		convertedTemp = threeDecimals(convertedTemp);
+		//convertedTemp = threeDecimals(convertedTemp);
 
 		//outputs
-		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Fahrenheit is "<<convertedTemp<<" Celcius."<<endl;
+		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Fahrenheit is "<<convertedTemp<<" Celsius."<<endl;
 
 	}else if (convertType == 3){
 		//Fahrenheit to Kelvin
 		convertedTemp = fahrenheitToKelvin(inputTemp);
 
 		//round to three decimal places
-		convertedTemp = threeDecimals(convertedTemp);
+		//convertedTemp = threeDecimals(convertedTemp);
 
 		//outputs
-		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Fahrenheit is "<<convertedTemp<<" Celcius."<<endl;
+		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Fahrenheit is "<<convertedTemp<<" Kelvin."<<endl;
 
 	}else if (convertType == 4){
-		//Kelvin to Celcius
-		convertedTemp = kelvinToCelcius(inputTemp);
+		//Kelvin to Celsius
+		convertedTemp = kelvinToCelsius(inputTemp);
 
 		//round to three decimal places
-		convertedTemp = threeDecimals(convertedTemp);
+		//convertedTemp = threeDecimals(convertedTemp);
 
 		//outputs
-		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Kelvin is "<<convertedTemp<<" Celcius."<<endl;
+		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Kelvin is "<<convertedTemp<<" Celsius."<<endl;
 
 	}else if (convertType == 5){
 		//Kelvin to Fahrenheit
 		convertedTemp = kelvinToFahrenheit(inputTemp);
 
 		//round to three decimal places
-		convertedTemp = threeDecimals(convertedTemp);
+		//convertedTemp = threeDecimals(convertedTemp);
 
 		//outputs
 		cout<< setiosflags(ios::fixed)<<setprecision(3)<<inputTemp<<" Kelvin is "<<convertedTemp<<" Fahrenheit."<<endl;
 
-	}else{
-		//this shouldn't appear; just a test
-		cout<<"I messed up this one. My bad."<<endl;
 	}
 
 	//pause for reading results
@@ -160,16 +147,16 @@ int main(){
 }
 
 //celsius to other
-double celciusToFahrenheit(double ctemp){
+double celsiusToFahrenheit(double ctemp){
 	double ftemp;
 
-	//converts celcius to fahrenheit
+	//converts Celsius to fahrenheit
 	ftemp = (ctemp * 9.0 / 5.0) + 32.0;
 
 	return ftemp;
 }
 
-double celciusToKelvin(double ctemp){
+double celsiusToKelvin(double ctemp){
 	double ktemp;
 
 	//conversion is a simple addition of 273.15
@@ -179,10 +166,10 @@ double celciusToKelvin(double ctemp){
 }
 
 //fahrenheit to other
-double fahrenheitToCelcius(double ftemp){
+double fahrenheitToCelsius(double ftemp){
 	double ctemp;
 
-	//converts fahrenheit to celcius
+	//converts fahrenheit to Celsius
 	ctemp = (ftemp - 32.0) * 5.0 / 9.0;
 
 	return ctemp;
@@ -191,14 +178,14 @@ double fahrenheitToCelcius(double ftemp){
 double fahrenheitToKelvin(double ftemp){
 	double ktemp;
 
-	//converts fahrenheit to celcius to kelvin, using these functions
-	ktemp = celciusToKelvin( fahrenheitToCelcius(ftemp) );
+	//converts fahrenheit to Celsius to kelvin, using these functions
+	ktemp = celsiusToKelvin( fahrenheitToCelsius(ftemp) );
 
 	return ktemp;
 }
 
 //kelvin to other
-double kelvinToCelcius(double ktemp){
+double kelvinToCelsius(double ktemp){
 	double ctemp;
 
 	//conversion is subtraction of 273.15
@@ -210,8 +197,8 @@ double kelvinToCelcius(double ktemp){
 double kelvinToFahrenheit(double ktemp){
 	double ftemp;
 
-	//converts from kelvin to celcius to fahrenheit, using these functions
-	ftemp = celciusToFahrenheit( kelvinToCelcius(ktemp) );
+	//converts from kelvin to Celsius to fahrenheit, using these functions
+	ftemp = celsiusToFahrenheit( kelvinToCelsius(ktemp) );
 
 	return ftemp;
 }
@@ -240,4 +227,27 @@ double threeDecimals(double num){
 
 	return decimal;
 
+}
+
+double validInputOnly(){
+	double input;
+
+	cin>>input;
+
+	do{
+		if(cin.fail()){
+			cin.clear();
+			//cin.ignore is for when you type random gibberish when I want only doubles
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			cout<<"Wrong input, try again: ";
+
+			cin>>input;
+
+		}
+		
+
+	} while(cin.fail());
+
+	return input;
 }

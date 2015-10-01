@@ -5,6 +5,7 @@ Perimeter and area of triangles
 */
 
 #include <iostream>	//included for output input stream
+#include <limits>
 //#include <cstdlib>	//included for system("PAUSE")
 #include <math.h>	//included for square root
 using namespace std;
@@ -12,7 +13,10 @@ using namespace std;
 bool isTriangle(double a, double b, double c);
 double triangleArea(double a, double b, double c);
 double trianglePerimeter(double a, double b, double c);
-double threeDecimals(double num);
+double twoDecimals(double num);
+
+//error checking for inputs
+double validInputOnly();
 
 
 //takes in three numbers for triangle side lengths
@@ -25,13 +29,13 @@ int main(){
 	//ask for user input
 	cout<<"Enter the dimensions of the triangle:"<<endl;
 	cout<<"Side-1: ";
-	cin>>side1;
+	side1 = validInputOnly();
 	
 	cout<<"Side-2: ";
-	cin>>side2;
+	side2 = validInputOnly();
 	
 	cout<<"Side-3: ";
-	cin>>side3;
+	side3 = validInputOnly();
 
 	if( ! isTriangle(side1, side2, side3)){
 		//for case where triangle is NOT possible to make
@@ -42,8 +46,8 @@ int main(){
 	}else{
 		//for case where triangle IS possible
 		//for the following, rounds each result to three decimals
-		double area = threeDecimals( triangleArea(side1, side2, side3) );
-		double perimeter = threeDecimals( trianglePerimeter(side1, side2, side3) );
+		double area = twoDecimals( triangleArea(side1, side2, side3) );
+		double perimeter = twoDecimals( trianglePerimeter(side1, side2, side3) );
 
 		cout<<"This triangle's area is "<<area<<" square-units and it's perimeter is "<<perimeter<<" units."<<endl;
 
@@ -100,25 +104,54 @@ double trianglePerimeter(double a, double b, double c){
 	return perimeter;
 }
 
-//function for reducing a decimal to three decimal places, rounded to nearest thousandth.
-double threeDecimals(double num){
-	int thousand_fold, ten_thousand_fold;
+//function for reducing a decimal to two decimal places, rounded to nearest hundredth.
+double twoDecimals(double num){
+	int hundred_fold, thousand_fold;
 	double decimal;
-	//holds double times 10,000 cast as an int, preserving some decimals 
-	ten_thousand_fold = (int) 10000 * num;
+	//holds double times 1,000 cast as an int, preserving some decimals 
+	thousand_fold = (int) 1000 * num;
 
-	//holds double times 1,000 cast as int
-	thousand_fold = (ten_thousand_fold / 10);
+	//holds double times 100 cast as int
+	hundred_fold = (thousand_fold / 10);
 
-	//rounding to nearest thousandth
-	int rounding = ten_thousand_fold % 10;
+	//rounding to nearest hundredth
+	int rounding = thousand_fold % 10;
 	if (rounding >= 5){
-		//adds one if tenthousandth place is 5 or greater
-		thousand_fold += 1;
+		//adds one if thousandth place is 5 or greater
+		hundred_fold += 1;
 	}
 
-	decimal = ((double) thousand_fold )/ 1000.0;
+	decimal = ((double) hundred_fold )/ 100.0;
 
 	return decimal;
 
+}
+
+//repeat input until only positive number input
+double validInputOnly(){
+	double input;
+
+	cin>>input;
+
+	do{
+		if(cin.fail()){
+			cin.clear();
+			//cin.ignore is for when you type random gibberish when I want only doubles
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			cout<<"Please input a positive real number for side length: ";
+
+			cin>>input;
+
+		}else if(input <= 0){
+			cout<<"Please input a positive real number for side length: ";
+
+			cin>>input;
+
+		}
+		
+
+	} while(cin.fail() || input <= 0);
+
+	return input;
 }

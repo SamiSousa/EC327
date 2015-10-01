@@ -7,6 +7,7 @@ Take character, and nonnegative offset, output new ASCII
 */
 
 #include <iostream>
+#include <limits>
 
 using namespace std;
 
@@ -20,6 +21,12 @@ bool isUpperCase(char a);
 char changeCase(char a);
 //change case of character a. If not a letter, returns the letter
 
+char validInputChar();
+//allow only valid input for character
+
+int validInputInt();
+//allows only valid input for int
+
 int main(){
 	
 	//declare variables
@@ -28,12 +35,10 @@ int main(){
 	int offset;
 
 	cout<<"Enter character: ";
-	cin>>input;
-	cin.ignore();
+	input = validInputChar();
 
 	cout<<"Offset (enter 0 to convert case): ";
-	cin>>offset;
-	cin.ignore();
+	offset = validInputInt();
 
 	if (offset < 0)
 		cout<<"Error. Negative offset."<<endl;
@@ -77,4 +82,66 @@ bool isAlphabet(char a){
 
 bool isUpperCase(char a){
 	return ( a >= 65 && a <= 90 );
+}
+
+char validInputChar(){
+	char input, leftovers;
+
+	cin>>input;
+
+	while(cin.fail() || cin.peek() != '\n'){
+		if(cin.fail()){
+			cin.clear();
+			//cin.ignore is for when you type random gibberish when I want only doubles
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			cout<<"Please input a valid single character: ";
+
+			cin>>input;
+
+		}else if(cin.peek() != '\n'){
+			cin.clear();
+			//cin.ignore is for when you type random gibberish when I want only doubles
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			cout<<"Please input a valid single character: ";
+
+			cin>>input;
+		}
+
+	}
+
+	return input;
+}
+
+int validInputInt(){
+	int validInt;
+
+	double input;
+
+	cin>>input;
+
+	do{
+		if(cin.fail()){
+			cin.clear();
+			//cin.ignore is for when you type random gibberish when I want only doubles
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			cout<<"Please input a positive int (enter 0 to convert case): ";
+
+			cin>>input;
+
+		}else if(input < 0 || (int) input != input){
+			cout<<"Please input a positive int (enter 0 to convert case): ";
+
+			cin>>input;
+
+		}
+		
+
+	} while(cin.fail() || input < 0 || (int) input != input);
+
+	validInt = input;
+
+	return validInt;
 }
